@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>綠建築座位專用燈 - 節能與自動排程儀表板</title>
+    <title>綠建築座位專用燈 - 節能與自動排程儀表板 (測試版)</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
     <script>
@@ -41,7 +41,7 @@
                     <h1 class="font-cyber font-black text-xl tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-emerald-400">
                         GREEN SEAT LIGHT
                     </h1>
-                    <p class="text-xs text-slate-400">綠建築座位專用燈與節能計費系統</p>
+                    <p class="text-xs text-slate-400">綠建築座位專用燈與節能計費系統 (展示測試模式)</p>
                 </div>
             </div>
             <div class="flex items-center space-x-3">
@@ -55,7 +55,7 @@
     <!-- Main Content -->
     <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 grid grid-cols-1 lg:grid-cols-12 gap-8">
         
-        <!-- Left Column: Controls & Schedule -->
+        <!-- Left Column: Controls, Schedule & Time Testing Tool -->
         <div class="lg:col-span-7 space-y-8">
             
             <!-- Lighting Control Panel -->
@@ -66,19 +66,19 @@
                         <span>燈光與節能排程控制</span>
                     </h2>
                     <div class="flex items-center space-x-2">
-                        <span class="text-xs text-slate-400">排程模式 (Schedule):</span>
+                        <span class="text-xs text-slate-400">排程自動模式:</span>
                         <input type="checkbox" id="schedule-toggle" onchange="toggleScheduleMode(this.checked)" class="w-5 h-5 accent-cyan-400 cursor-pointer">
                     </div>
                 </div>
 
                 <div class="space-y-6">
                     <div>
-                        <label class="block text-xs font-cyber text-slate-300 mb-2">自訂 RGB 顏色與手動亮度</label>
+                        <label class="block text-xs font-cyber text-slate-300 mb-2">手動 RGB 顏色與亮度微調</label>
                         <div class="flex items-center space-x-4">
                             <input type="color" id="main-color-picker" value="#ff6400" oninput="onColorPickerChange(this.value)" class="w-14 h-12 bg-slate-900 border border-slate-700 rounded-xl cursor-pointer p-1">
                             <div class="flex-1">
                                 <div class="flex justify-between text-xs text-slate-400 mb-1">
-                                    <span>亮度設定</span>
+                                    <span>手動亮度</span>
                                     <span id="bright-val-text" class="text-cyan-400 font-bold">100% (255)</span>
                                 </div>
                                 <input type="range" id="bright-slider" min="0" max="255" value="255" oninput="onBrightnessChange(this.value)" class="w-full">
@@ -93,8 +93,38 @@
                             <span id="schedule-effect-name" class="font-cyber font-bold text-emerald-400 text-sm">手動控制模式</span>
                         </div>
                         <div class="text-right">
-                            <span id="current-time-display" class="font-mono text-xs text-slate-400">--:--:--</span>
+                            <span id="current-time-display" class="font-mono text-base text-cyan-400 font-bold">--:--:--</span>
                         </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 專為審查/測試設計的時間快轉控制台 -->
+            <section class="glass-card p-6 shadow-glow-panel border-cyan-500/30 bg-cyan-950/20">
+                <h2 class="font-cyber font-bold text-md text-cyan-300 mb-3 flex items-center space-x-2">
+                    <i data-lucide="clock" class="w-5 h-5"></i>
+                    <span>展示測試：模擬時間快轉控制台</span>
+                </h2>
+                <p class="text-xs text-slate-400 mb-4">勾選上方「排程自動模式」後，可透過下方滑桿自由調整模擬時間，觀察不同時段的 RGB 燈光變化與電費累積：</p>
+                
+                <div class="space-y-4">
+                    <div>
+                        <div class="flex justify-between text-xs text-slate-300 mb-1">
+                            <span>模擬當天時間: <strong id="sim-time-label" class="text-cyan-400 font-mono text-sm">08:00</strong></span>
+                            <span class="text-slate-400">拖曳以快速切換時段</span>
+                        </div>
+                        <!-- 0 到 1440 分鐘 (24小時) -->
+                        <input type="range" id="time-slider" min="0" max="1439" value="480" oninput="onSimTimeChange(this.value)" class="w-full accent-cyan-400">
+                    </div>
+
+                    <div class="grid grid-cols-4 gap-2 pt-2">
+                        <button onclick="setTestTime(7, 0)" class="px-2 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-700 rounded-lg text-xs text-slate-300">07:00 晨光</button>
+                        <button onclick="setTestTime(10, 0)" class="px-2 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-700 rounded-lg text-xs text-slate-300">10:00 白光</button>
+                        <button onclick="setTestTime(14, 0)" class="px-2 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-700 rounded-lg text-xs text-slate-300">14:00 日光</button>
+                        <button onclick="setTestTime(19, 0)" class="px-2 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-700 rounded-lg text-xs text-slate-300">19:00 橘黃</button>
+                        <button onclick="setTestTime(22, 0)" class="px-2 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-700 rounded-lg text-xs text-slate-300">22:00 暖橘紅</button>
+                        <button onclick="setTestTime(2, 0)" class="px-2 py-1.5 bg-slate-900 hover:bg-slate-850 border border-slate-700 rounded-lg text-xs text-slate-300">02:00 夜間</button>
+                        <button onclick="useRealTime()" class="col-span-2 px-2 py-1.5 bg-cyan-950 hover:bg-cyan-900 border border-cyan-700 rounded-lg text-xs text-cyan-300 font-bold">切回真實系統時間</button>
                     </div>
                 </div>
             </section>
@@ -144,7 +174,7 @@
             <section class="glass-card p-6">
                 <h2 class="font-cyber font-bold text-xs text-slate-300 mb-2">藍芽通訊 Log</h2>
                 <div id="serial-log" class="bg-black/90 border border-slate-800 rounded-xl p-3 h-32 overflow-y-auto font-mono text-[11px] text-cyan-400 space-y-1">
-                    <div>[System] 準備就緒。</div>
+                    <div>[System] 準備就緒。已載入測試時間控制面板。</div>
                 </div>
             </section>
         </div>
@@ -157,6 +187,8 @@
 
         let bleDevice, bleServer, commandChar, dataChar;
         let isScheduleMode = false;
+        let isManualTestTime = false; // 是否使用手動模擬時間
+        let simulatedTotalMinutes = 480; // 預設 08:00 (8 * 60)
         let accumulatedKWh = 0;
         let lastUpdateTime = Date.now();
         let currentBrightnessPct = 100;
@@ -246,35 +278,82 @@
             return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
         }
 
-        // 每秒更新排程與電費計算
-        setInterval(() => {
-            let now = new Date();
-            let hours = now.getHours();
-            let minutes = now.getMinutes();
-            let seconds = now.getSeconds();
-            document.getElementById('current-time-display').textContent = 
-                String(hours).padStart(2,'0') + ":" + String(minutes).padStart(2,'0') + ":" + String(seconds).padStart(2,'0');
+        // 模擬時間滑桿變更
+        function onSimTimeChange(val) {
+            isManualTestTime = true;
+            simulatedTotalMinutes = parseInt(val);
+            updateTimeDisplayAndSchedule();
+        }
 
-            // 自動排程邏輯
+        function setTestTime(hour, minute) {
+            isManualTestTime = true;
+            simulatedTotalMinutes = hour * 60 + minute;
+            document.getElementById('time-slider').value = simulatedTotalMinutes;
+            updateTimeDisplayAndSchedule();
+            appendLog(`[測試] 手動快轉至時間：${String(hour).padStart(2,'0')}:${String(minute).padStart(2,'0')}`);
+        }
+
+        function useRealTime() {
+            isManualTestTime = false;
+            appendLog("[測試] 已恢復為真實系統時間");
+        }
+
+        function updateTimeDisplayAndSchedule() {
+            let hours = Math.floor(simulatedTotalMinutes / 60);
+            let minutes = simulatedTotalMinutes % 60;
+            let timeStr = String(hours).padStart(2,'0') + ":" + String(minutes).padStart(2,'0') + ":00";
+            document.getElementById('current-time-display').textContent = timeStr;
+            document.getElementById('sim-time-label').textContent = timeStr.substring(0, 5);
+
+            // 如果開啟自動排程，根據模擬時間套用排程
             if (isScheduleMode) {
                 let currentActive = scheduleTable.find(s => hours >= s.start && hours < s.end);
                 if (currentActive) {
                     document.getElementById('schedule-effect-name').textContent = currentActive.name;
                     currentBrightnessPct = currentActive.bright;
-                    // 自動發送排程指令給 ESP32
                     sendCmd(`RGB:${currentActive.r},${currentActive.g},${currentActive.b}`);
                     sendCmd(`BRIGHT:${Math.round(currentActive.bright * 2.55)}`);
                 }
             }
+        }
 
-            // 電費與耗電量計算 (假設全開 1.8W)
+        // 每秒定時器
+        setInterval(() => {
+            let hours, minutes, seconds;
+
+            if (!isManualTestTime) {
+                let now = new Date();
+                hours = now.getHours();
+                minutes = now.getMinutes();
+                seconds = now.getSeconds();
+                simulatedTotalMinutes = hours * 60 + minutes;
+                document.getElementById('time-slider').value = simulatedTotalMinutes;
+                document.getElementById('sim-time-label').textContent = String(hours).padStart(2,'0') + ":" + String(minutes).padStart(2,'0');
+                
+                document.getElementById('current-time-display').textContent = 
+                    String(hours).padStart(2,'0') + ":" + String(minutes).padStart(2,'0') + ":" + String(seconds).padStart(2,'0');
+
+                if (isScheduleMode) {
+                    let currentActive = scheduleTable.find(s => hours >= s.start && hours < s.end);
+                    if (currentActive) {
+                        document.getElementById('schedule-effect-name').textContent = currentActive.name;
+                        currentBrightnessPct = currentActive.bright;
+                        sendCmd(`RGB:${currentActive.r},${currentActive.g},${currentActive.b}`);
+                        sendCmd(`BRIGHT:${Math.round(currentActive.bright * 2.55)}`);
+                    }
+                }
+            } else {
+                updateTimeDisplayAndSchedule();
+            }
+
+            // 電費與耗電量計算
             let nowTime = Date.now();
             let hoursElapsed = (nowTime - lastUpdateTime) / 3600000;
             lastUpdateTime = nowTime;
 
             let currentPowerW = 1.8 * (currentBrightnessPct / 100);
             accumulatedKWh += (currentPowerW * hoursElapsed) / 1000;
-            let estimatedCostNTD = accumulatedKWh * 4.5; // 每度 4.5 元
+            let estimatedCostNTD = accumulatedKWh * 4.5;
 
             document.getElementById('power-watt').textContent = currentPowerW.toFixed(2);
             document.getElementById('energy-kwh').textContent = accumulatedKWh.toFixed(4);
